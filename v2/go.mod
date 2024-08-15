@@ -1,4 +1,4 @@
-module github.com/drummonds/confluence-go-api.git
+module github.com/drummonds/confluence-go-api/v2
 
 go 1.13
 
