@@ -22,7 +22,7 @@ func TestRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	testValues := []testValuesRequest{
@@ -61,7 +61,7 @@ func TestSendContentRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentEndpoint()
@@ -87,7 +87,7 @@ func TestSendContentRequestToken(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentEndpoint()
@@ -120,7 +120,7 @@ func TestSendContentAttachmentRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentChildEndpoint("43", "attachment")
@@ -155,7 +155,7 @@ func TestSendUserRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getUserEndpoint("42")
@@ -186,7 +186,7 @@ func TestSendSearchRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getSearchEndpoint()
@@ -217,7 +217,7 @@ func TestSendHistoryRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentGenericEndpoint("42", "history")
@@ -249,7 +249,7 @@ func TestSendLabelRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentGenericEndpoint("42", "label")
@@ -280,7 +280,7 @@ func TestSendWatcherRequest(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	ep, err := api.getContentGenericEndpoint("42", "notification/child-created")
@@ -305,73 +305,73 @@ func confluenceRestAPIStub() *httptest.Server {
 	var resp interface{}
 	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.RequestURI {
-		case "/wiki/rest/api/test":
+		case "/wiki/api/v2/test":
 			resp = "test"
-		case "/wiki/rest/api/noauth":
+		case "/wiki/api/v2/noauth":
 			http.Error(w, "unauthorized", http.StatusUnauthorized)
 			return
-		case "/wiki/rest/api/nocontent":
+		case "/wiki/api/v2/nocontent":
 			http.Error(w, "", http.StatusNoContent)
 			return
-		case "/wiki/rest/api/noservice":
+		case "/wiki/api/v2/noservice":
 			http.Error(w, "", http.StatusServiceUnavailable)
 			return
-		case "/wiki/rest/api/internalerror":
+		case "/wiki/api/v2/internalerror":
 			http.Error(w, "", http.StatusInternalServerError)
 			return
-		case "/wiki/rest/api/unknown":
+		case "/wiki/api/v2/unknown":
 			http.Error(w, "", http.StatusRequestTimeout)
 			return
-		case "/wiki/rest/api/content/":
+		case "/wiki/api/v2/content/":
 			resp = Content{}
-		case "/wiki/rest/api/content/42":
+		case "/wiki/api/v2/content/42":
 			if r.Method == "DELETE" {
 				resp = ""
 				w.WriteHeader(http.StatusNoContent)
 			} else {
 				resp = Content{}
 			}
-		case "/wiki/rest/api/user?username=42":
+		case "/wiki/api/v2/user?username=42":
 			resp = User{}
-		case "/wiki/rest/api/user?accountId=42":
+		case "/wiki/api/v2/user?accountId=42":
 			resp = User{}
-		case "/wiki/rest/api/user?key=42":
+		case "/wiki/api/v2/user?key=42":
 			resp = User{}
-		case "/wiki/rest/api/user/current":
+		case "/wiki/api/v2/user/current":
 			resp = User{}
-		case "/wiki/rest/api/user/anonymous":
+		case "/wiki/api/v2/user/anonymous":
 			resp = User{}
-		case "/wiki/rest/api/search":
+		case "/wiki/api/v2/search":
 			resp = Search{}
-		case "/wiki/rest/api/content/42/history":
+		case "/wiki/api/v2/content/42/history":
 			resp = History{}
-		case "/wiki/rest/api/content/42/label":
+		case "/wiki/api/v2/content/42/label":
 			resp = Labels{}
-		case "/wiki/rest/api/content/42/label/test":
+		case "/wiki/api/v2/content/42/label/test":
 			resp = Labels{}
-		case "/wiki/rest/api/content/42/notification/child-created":
+		case "/wiki/api/v2/content/42/notification/child-created":
 			resp = Watchers{}
-		case "/wiki/rest/api/content/42/child/page":
+		case "/wiki/api/v2/content/42/child/page":
 			resp = Search{}
-		case "/wiki/rest/api/content/42/child/page?limit=25":
+		case "/wiki/api/v2/content/42/child/page?limit=25":
 			resp = Search{}
-		case "/wiki/rest/api/content/42/child/attachment":
+		case "/wiki/api/v2/content/42/child/attachment":
 			resp = Search{}
-		case "/wiki/rest/api/content/43/child/attachment/123/data":
+		case "/wiki/api/v2/content/43/child/attachment/123/data":
 			resp = Search{}
-		case "/wiki/rest/api/content/43/child/attachment":
+		case "/wiki/api/v2/content/43/child/attachment":
 			resp = Content{}
-		case "/wiki/rest/api/content/42/child/comment":
+		case "/wiki/api/v2/content/42/child/comment":
 			resp = Search{}
-		case "/wiki/rest/api/content/42/child/history":
+		case "/wiki/api/v2/content/42/child/history":
 			resp = Search{}
-		case "/wiki/rest/api/content/42/child/label":
+		case "/wiki/api/v2/content/42/child/label":
 			resp = Search{}
-		case "/wiki/rest/api/space":
+		case "/wiki/api/v2/space":
 			resp = AllSpaces{}
-		case "/wiki/rest/api/template/blueprint":
+		case "/wiki/api/v2/template/blueprint":
 			resp = TemplateSearch{}
-		case "/wiki/rest/api/template/page":
+		case "/wiki/api/v2/template/page":
 			resp = TemplateSearch{}
 		default:
 			http.Error(w, "not found", http.StatusNotFound)

@@ -32,7 +32,7 @@ func TestContentGetter(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	c, err := api.GetContentByID("42", ContentQuery{})
@@ -72,7 +72,7 @@ func TestAddLabels(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	l, err := api.AddLabels("42", &[]Label{})
@@ -84,7 +84,7 @@ func TestDeleteLabels(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	l, err := api.DeleteLabel("42", "test")
@@ -96,7 +96,7 @@ func TestContent(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	c, err := api.CreateContent(&Content{})

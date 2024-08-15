@@ -32,7 +32,7 @@ func TestGetAllSpacesQuery(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	s, err := api.GetAllSpaces(AllSpacesQuery{})

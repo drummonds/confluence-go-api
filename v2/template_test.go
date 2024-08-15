@@ -33,7 +33,7 @@ func TestBlueprintTemplateGetter(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	b, err := api.GetBlueprintTemplates(TemplateQuery{})
@@ -46,7 +46,7 @@ func TestContentTemplateGetter(t *testing.T) {
 	server := confluenceRestAPIStub()
 	defer server.Close()
 
-	api, err := NewAPI(server.URL+"/wiki/rest/api", "userame", "token")
+	api, err := NewAPI(server.URL+"/wiki/api/v2", "userame", "token")
 	assert.Nil(t, err)
 
 	c, err := api.GetContentTemplates(TemplateQuery{})
